@@ -36,17 +36,11 @@ public class Fenetre extends JFrame
 	private FlowLayout lTitre = new FlowLayout(FlowLayout.CENTER);
 	private FlowLayout lLogin = new FlowLayout(FlowLayout.CENTER);
 	private FlowLayout lMdp = new FlowLayout(FlowLayout.CENTER);
-	/*private FlowLayout lConnect = new FlowLayout(FlowLayout.CENTER);
-	private FlowLayout lTest = new FlowLayout(FlowLayout.CENTER);
 	
-	private String login = new String();
-	private String mdp = new String();
-	String testLogin = new String();
-	
-	String testMdp = new String();*/
-	
-		
-
+	/**
+	 * Constructeur de Fenetre
+	 * @param root
+	 */
 	public Fenetre(Root root)
 	{
 		this.root = root;
@@ -78,10 +72,12 @@ public class Fenetre extends JFrame
 		buConnect.addActionListener(getOkAction());
 		buAnnuler.addActionListener(getQuitterAction());
 		
-		/*couleur--> panel.setBackground(Color.white); */
-		
 	}
 	
+	/**
+	 * Fermeture de la fenetre
+	 * @return
+	 */
 	private ActionListener getQuitterAction()
 	{
 		return new ActionListener() 
@@ -95,7 +91,12 @@ public class Fenetre extends JFrame
 		};
 	}
 	
-	
+	/**
+	 * action de connexion, verifie le login, le mdp et si l'utilisateur est admin
+	 * si les 3 conditions: ouverture du menu
+	 * sinon messages d'erreur
+	 * @return
+	 */
 	private ActionListener getOkAction()
 	{
 		return new ActionListener() 
@@ -123,7 +124,6 @@ public class Fenetre extends JFrame
 					}
 					catch(DataAccessException e) 
 					{
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 					}
 						
@@ -135,6 +135,9 @@ public class Fenetre extends JFrame
 		};
 	}
 	
+	/**
+	 * fonction de visibilité de la fenetre
+	 */
 	public void affiche()
 	{
 		setVisible(true);

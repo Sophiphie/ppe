@@ -42,8 +42,10 @@ public class Formulaire extends JFrame{
 	final static int AJOUT = 0;
 	final static int MODIFICATION = 1;
 	
-/***************************************************/	
-	/** méthode changemode pour les formulaires d'ajout et de modif dans le menu utilisateur*/
+	/**
+	 * méthode de changement de la disposition du formulaire selon le cas ajout ou modification
+	 * @param mode
+	 */
 	
 	void changeMode(int mode)
 	{
@@ -69,8 +71,14 @@ public class Formulaire extends JFrame{
 	}
 	
 
-	
-	public Formulaire(Root root, Utilisateurs utilisateurs){
+	/**
+	 * constructeur de la classe Formulaire
+	 * @param root
+	 * @param utilisateurs
+	 */
+	public Formulaire(Root root, Utilisateurs utilisateurs)
+	{
+		
 		this.utilisateurs = utilisateurs;
 		this.root = root;
 		setTitle("Formulaire Inscription");
@@ -115,12 +123,14 @@ public class Formulaire extends JFrame{
 		getContentPane().add(panel1, BorderLayout.CENTER);
 		getContentPane().add(panel2, BorderLayout.SOUTH);
 		
-
 		getAnnuler();
 		changeMode(AJOUT);
 	
 	}
-
+	
+	/**
+	 * fermeture du formulaire et retour sur le menu utilisateur
+	 */
 	private void getAnnuler() {
 		
 		buAnnuler.addActionListener(new ActionListener() {
@@ -132,7 +142,10 @@ public class Formulaire extends JFrame{
 	}
 
 	//TODO remettre setMsg à "inscription" après un mauvais ajout
-	/** ajout d'un nouvel utilisateur */
+	/**
+	 * ajout d'un nouvel utilisateur dans la bdd si les champs login et telephone sont renseignes 
+	 * @return
+	 */
 	private ActionListener getAjouterUser()
 	{
 		return new ActionListener()
@@ -171,8 +184,8 @@ public class Formulaire extends JFrame{
 								
 							    }
 								
-								catch (DataAccessException e) {
-									// TODO Auto-generated catch block
+								catch (DataAccessException e) 
+								{
 									e.printStackTrace();
 								}
 
@@ -236,13 +249,19 @@ public class Formulaire extends JFrame{
 	
 	
 	
-	
+	/**
+	 * permet le changement du label titre du formulaire
+	 * @param msg
+	 */
 	private void setMsg(String msg)
 	{
-		
 		insc.setText(msg);
 	}
-
+	
+	/**
+	 * methode permettant de recuperer les informations pre-remplies de l'utilisateur selectionne dans le menu utilisateur
+	 * @param u
+	 */
 	public void setUtilisateur(Utilisateur u) 
 	{
 		// TODO Auto-generated method stub

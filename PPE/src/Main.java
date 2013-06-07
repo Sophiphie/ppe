@@ -16,10 +16,10 @@ public class Main {
 		Root root;
 		try {
 			root = new Root();
-			
-			/*new Utilisateurs(root);*/
-			Fenetre f = new Fenetre(root);
-			f.affiche();
+			/*new Services(root);*/
+			new Utilisateurs(root);
+			/*Fenetre f = new Fenetre(root);
+			f.affiche();*/
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

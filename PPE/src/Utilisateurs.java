@@ -5,9 +5,12 @@ import java.sql.*;
 import javax.swing.*;
 import javax.swing.plaf.OptionPaneUI;
 
+import metier.Cle;
 import metier.DataAccessException;
 import metier.Root;
+import metier.Service;
 import metier.Utilisateur;
+import metier.Cle;
 
 public class Utilisateurs extends JFrame {
 	
@@ -41,7 +44,10 @@ public class Utilisateurs extends JFrame {
 	private JTextArea tServices = new JTextArea();
 	
 	
-	
+	/**
+	 * Constructeur de la classe Utilisateurs
+	 * @param root
+	 */
 	public Utilisateurs(Root root){
 		
 		this.root = root;
@@ -90,12 +96,11 @@ public class Utilisateurs extends JFrame {
 		
 		JPanel hautDroite = new JPanel();
 		hautDroite.setLayout(new GridLayout(9, 2));
-		/*hautDroite.add(tSearch);
-		hautDroite.add(buSearch);*/
 		hautDroite.add(lServices);
 		hautDroite.add(tServices);
 		tServices.setColumns(1);
 		tServices.setColumns(10);
+		tServices.setEnabled(false);
 		
 		JPanel bas = new JPanel();
 		bas.setLayout(new FlowLayout());
@@ -118,7 +123,10 @@ public class Utilisateurs extends JFrame {
 
 	}
 
-	/** récupération des logins dans la comboBox*/
+	/**
+	 * récupération des logins dans la comboBox
+	 * @return
+	 */
 	private String[] importUsers() {
 		
 		try 
@@ -135,7 +143,9 @@ public class Utilisateurs extends JFrame {
 		}
 	}
 	
-	/** affiche les infos de l'utilisateur selectionne*/
+	/**
+	 * affiche les infos de l'utilisateur selectionne
+	 */
 	private void getSelectionne() {
 		
 		cCombo.addActionListener(new ActionListener() {
@@ -145,7 +155,9 @@ public class Utilisateurs extends JFrame {
 				try 
 				{	
 					Utilisateur u = root.getUtilisateurByIndex(cCombo.getSelectedIndex());
+					int numU = u.getNumUtilisateur();
 					System.out.println(u);
+					System.out.println(numU);
 					//TODO remplacer les zones de textes par des labels
 					tLogin.setText(u.getLogin());
 					tMdp.setText(u.getMdp1());
@@ -155,21 +167,26 @@ public class Utilisateurs extends JFrame {
 					tCP.setText(u.getCp());
 					tVille.setText(u.getVille());
 					
-					//TODO trouver un système pour qu'un bouton soit toujours coché
 					if (u.getEstAdmin())
 						tAdmin.setSelected(true);
 					else
 						tNonAdmin.setSelected(true);
+
+					Cle c = u.getCleByIndex(numU);
+					System.out.println(c.getNumeroCle());
+					/*tServices.setText(c.getNumeroCle());*/
+					
 				 } 
 				catch (DataAccessException e1) 
 				{
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
 		});
 }
-	
+	/**
+	 * fermeture et retour a la fenetre Menu
+	 */
 	private void getRetour(){
 		buRetour.addActionListener(new ActionListener(){
 			
@@ -180,7 +197,9 @@ public class Utilisateurs extends JFrame {
 		});
 	}
 	
-	/** affiche un formulaire vide pour un ajout */
+	/**
+	 * affiche un formulaire vide pour un ajout
+	 */
 	private void getAjouter(){
 		buAjouter.addActionListener(new ActionListener(){
 			
@@ -193,7 +212,9 @@ public class Utilisateurs extends JFrame {
 		});
 	}
 	
-	/** affiche les infos de l'utilisateur dans le formulaire de modif */
+	/**
+	 * affiche les infos de l'utilisateur dans le formulaire de modif
+	 */
 	private void getModifier(){
 		buModifier.addActionListener(new ActionListener(){
 			
@@ -210,7 +231,6 @@ public class Utilisateurs extends JFrame {
 				 } 
 				catch (DataAccessException e1) 
 				{
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
@@ -219,7 +239,10 @@ public class Utilisateurs extends JFrame {
 		});
 	}
 	
-	/** suppression de l'utilisateur selectionne */
+	/**
+	 * suppression de l'utilisateur selectionne
+	 * @return
+	 */
 	private ActionListener getSupprimer()
 	{
 		return new ActionListener()
@@ -236,7 +259,6 @@ public class Utilisateurs extends JFrame {
 				}
 				catch (DataAccessException e1) 
 				{
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 	 
@@ -244,13 +266,18 @@ public class Utilisateurs extends JFrame {
 		};
 	}
 
-
+	/**
+	 * met a jour la liste des libelle dans la comboBox
+	 */
 	public void rafraichirListe() {
 		cCombo  = new JComboBox<String>(importUsers());
 		
 	}
 
-	/** ajoute dans la combobox le login d'un nouvel utilisateur après l'ajout*/
+	/**
+	 * ajoute dans la combobox le login d'un nouvel utilisateur après l'ajout
+	 * @param s
+	 */
 	public void addItem(String s)
 	{
 		cCombo.addItem(s);

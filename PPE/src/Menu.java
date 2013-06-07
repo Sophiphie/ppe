@@ -19,10 +19,11 @@ public class Menu extends JFrame{
 	private JPanel pServices = new JPanel();
 	private JPanel pFermer = new JPanel();
 	private FlowLayout lMenu = new FlowLayout(FlowLayout.CENTER);
-	/*private FlowLayout lUsers = new FlowLayout(FlowLayout.CENTER);
-	private FlowLayout lServices = new FlowLayout(FlowLayout.CENTER);
-	private FlowLayout lFermer = new FlowLayout(FlowLayout.RIGHT);*/
-	
+
+	/**
+	 * Constructeur de Menu
+	 * @param root
+	 */
 	public Menu(Root root){
 		this.root = root;
 		setSize(500,300);
@@ -37,6 +38,8 @@ public class Menu extends JFrame{
 		add(pUsers);
 		add(pServices);
 		add(pFermer);
+		
+		
 		
 		
 		buUsers.addActionListener(new ActionListener()

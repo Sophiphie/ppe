@@ -6,25 +6,29 @@ import javax.swing.*;
 import metier.DataAccessException;
 import metier.Root;
 import metier.Service;
+import metier.Utilisateur;
 
-public class FormulaireS extends JFrame implements KeyListener{
-	
+public class FormulaireS extends JFrame implements KeyListener
+{
+	private Services services;
 	private Root root;
 	private JLabel service = new JLabel("Nouveau Service");
 	private JLabel fLibelle = new JLabel("Libellé");
-	private JTextField txLibelle = new JTextField(10); 
+	private JTextField txLibelle = new JTextField(10);
+	private JLabel fCle = new JLabel("Clé");
+	private JTextField txCle = new JTextField(10);
 	
 	private JButton buEnregistrer = new JButton("Enregistrer");
-	private JButton buSupprimer = new JButton("Supprimer");
 	private JButton buAnnuler = new JButton("Annuler");
 	
 	
 	final static int AJOUT = 0;
 	final static int MODIFICATION = 1;
 	
-/***************************************************/	
-	/* métohde changemode pour les formulaires d'ajout et de modif dans le menu utilisateur*/
-	
+	/**
+	 * méthode de changement de la disposition du formulaire selon le cas ajout ou modification
+	 * @param mode
+	 */
 	void changeMode(int mode)
 	{
 		switch(mode)
@@ -33,26 +37,29 @@ public class FormulaireS extends JFrame implements KeyListener{
 			
 			buAnnuler.setVisible(true);
 			buEnregistrer.setVisible(true);
-			buSupprimer.setVisible(false);
+			buEnregistrer.addActionListener(getAjouterService());
 			break;
+			
 		case MODIFICATION :
 			
+			setTitle("Modification");
 			buEnregistrer.setVisible(true);
 			buAnnuler.setVisible(true);
-			buSupprimer.setVisible(true);
-			
 			break;
 			
 		}
 	}
 	
-	public FormulaireS(Root root){
-		if (root == null)
-			System.out.println("ACHTUNG ROOT IS NULL");
-
+	/**
+	 * constructeur de la classe FormulaireS
+	 * @param root
+	 */
+	public FormulaireS(Root root, Services services)
+	{
+		this.services = services;
 		this.root = root;
 		addKeyListener(this);
-		setTitle("Formulaire Inscription");
+		setTitle("Formulaire services");
 		setSize(400, 300);
 		setVisible (true);
 		
@@ -64,14 +71,14 @@ public class FormulaireS extends JFrame implements KeyListener{
 		form2.setLayout(new GridLayout(5,2));
 		form2.add(fLibelle);
 		form2.add(txLibelle);
-		
+		form2.add(fCle);
+		form2.add(txCle);
 		
 		JPanel form3 = new JPanel();
 		form3.setLayout(new FlowLayout());
 		form3.add(buEnregistrer);
-		form3.add(buSupprimer);
-		form3.add(buAnnuler);
 		
+		form3.add(buAnnuler);
 		
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(form1, BorderLayout.NORTH);
@@ -80,13 +87,13 @@ public class FormulaireS extends JFrame implements KeyListener{
 		
 		
 		getAnnuler();
-		buEnregistrer.addActionListener(getAjouterService());
-		getSupprimer();
+		
 		changeMode(AJOUT);
-		
-		
 	}
 	
+	/**
+	 * fermeture du formulaire et retour au menu utilisateur
+	 */
 	private void getAnnuler() {
 		
 		buAnnuler.addActionListener(new ActionListener() {
@@ -97,7 +104,10 @@ public class FormulaireS extends JFrame implements KeyListener{
 		});
 }
 
-	
+	/**
+	 * methode pour ajouter un service dans la BDD
+	 * @return
+	 */
 	private ActionListener getAjouterService()
 	{
 		return new ActionListener()
@@ -105,24 +115,27 @@ public class FormulaireS extends JFrame implements KeyListener{
 			public void actionPerformed(ActionEvent arg0)
 			{
 				boolean ajouterService = !txLibelle.getText().equals("");
+						
 				String nomService = txLibelle.getText();
+				
 						
 				if (ajouterService)
 				{
 					Service service = new Service (root, nomService); 
 					System.out.println(nomService);
 					
+					
+					
 					try
 					{
-						
 						root.save(service);
 						txLibelle.setText("");
-						System.out.println("Service ajouté");
-						
+						setMsg("Service ajouté");
+						services.addItem(service.getNomService());
 					}	
 					
-					catch (DataAccessException e) {
-						// TODO Auto-generated catch block
+					catch (DataAccessException e) 
+					{	
 						e.printStackTrace();
 					}
 				}
@@ -134,7 +147,10 @@ public class FormulaireS extends JFrame implements KeyListener{
 	}
 	
 	
-	
+	public void setService(Service s) 
+	{
+		txLibelle.setText(s.getNomService());
+	}
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
@@ -154,23 +170,10 @@ public class FormulaireS extends JFrame implements KeyListener{
 		
 	}
 	
-	private void getSupprimer(){
-		buSupprimer.addActionListener(new ActionListener(){
-			
-			public void actionPerformed(ActionEvent e) {
-				
-				JOptionPane confirm;
-				confirm = new JOptionPane();
-				confirm.showConfirmDialog(null, "Voulez vous vraiment supprimer ?", "confirmer", JOptionPane.YES_NO_OPTION);
-			
-				/* si "oui" --> requête de suppression de données
-				 * si "non" --> retour à la fenêtre, aucune requête*/
-				 
-			}
-		});
-	}
-	
-	
+	/**
+	 * permet le changement du label titre du formulaire
+	 * @param msg
+	 */
 	private void setMsg(String msg)
 	{
 		System.out.println(msg);
