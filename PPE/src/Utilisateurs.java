@@ -169,7 +169,7 @@ public class Utilisateurs extends JFrame {
 					
 					if (u.getEstAdmin())
 						tAdmin.setSelected(true);
-					else
+					else 
 						tNonAdmin.setSelected(true);
 
 					Cle c = u.getCleByIndex(numU);
